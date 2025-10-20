@@ -1,3 +1,8 @@
+import 'package:aura/screens/maps_screen.dart';
+import 'package:aura/screens/movies_screen.dart';
+import 'package:aura/screens/other_screen.dart';
+import 'package:aura/screens/products_screen.dart';
+import 'package:aura/screens/recipes_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,6 +16,10 @@ class HomeScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar.large(
+              leading: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.auto_awesome),
+              ),
               title: const Text(
                 'Welcome to Aura',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -27,7 +36,6 @@ class HomeScreen extends StatelessWidget {
                     // Featured Card
                     Container(
                       width: double.infinity,
-                      height: 200,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -53,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(24),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               'Discover Something New',
@@ -65,15 +73,43 @@ class HomeScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Explore amazing features',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: Colors.white.withOpacity(0.9),
-                                  ),
+                            const SizedBox(height: 16),
+                            TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Enter a URL',
+                                filled: true,
+                                fillColor: Colors.white.withOpacity(0.2),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                              ),
+                              child: const Text(
+                                'Analyze',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -101,27 +137,69 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         _buildQuickActionCard(
                           context,
-                          Icons.rocket_launch,
-                          'Get Started',
+                          Icons.map_outlined,
+                          'Maps',
+                          Colors.green,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MapsScreen()),
+                            );
+                          },
+                        ),
+                        _buildQuickActionCard(
+                          context,
+                          Icons.restaurant_menu,
+                          'Recipes',
+                          Colors.orange,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RecipesScreen()),
+                            );
+                          },
+                        ),
+                        _buildQuickActionCard(
+                          context,
+                          Icons.shopping_bag_outlined,
+                          'Products',
                           Colors.blue,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ProductsScreen()),
+                            );
+                          },
                         ),
                         _buildQuickActionCard(
                           context,
-                          Icons.lightbulb_outline,
-                          'Ideas',
-                          Colors.amber,
+                          Icons.movie_outlined,
+                          'Movies',
+                          Colors.red,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MoviesScreen()),
+                            );
+                          },
                         ),
                         _buildQuickActionCard(
                           context,
-                          Icons.favorite_outline,
-                          'Favorites',
-                          Colors.pink,
-                        ),
-                        _buildQuickActionCard(
-                          context,
-                          Icons.settings_outlined,
-                          'Settings',
-                          Colors.purple,
+                          Icons.more_horiz,
+                          'Other',
+                          Colors.grey,
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const OtherScreen()),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -140,12 +218,13 @@ class HomeScreen extends StatelessWidget {
     IconData icon,
     String title,
     Color color,
+    VoidCallback onTap,
   ) {
     return Card(
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
           padding: const EdgeInsets.all(16),
