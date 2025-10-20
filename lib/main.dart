@@ -23,7 +23,7 @@ class AuraApp extends StatelessWidget {
         ),
         useMaterial3: true,
         textTheme: GoogleFonts.interTextTheme(),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
@@ -37,7 +37,7 @@ class AuraApp extends StatelessWidget {
         ),
         useMaterial3: true,
         textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
