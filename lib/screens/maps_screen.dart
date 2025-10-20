@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import the new package
 
 class MapsScreen extends StatefulWidget {
   const MapsScreen({super.key});
@@ -35,7 +36,8 @@ class _MapsScreenState extends State<MapsScreen> {
 
       if (permission == LocationPermission.deniedForever) {
         setState(() {
-          _errorMessage = 'Location permissions are permanently denied, we cannot request permissions.';
+          _errorMessage =
+              'Location permissions are permanently denied, we cannot request permissions.';
         });
         return;
       }
@@ -52,13 +54,20 @@ class _MapsScreenState extends State<MapsScreen> {
     }
   }
 
+  Future<void> _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      // You could show an error snackbar here
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: CustomScrollView(
-          physics: const NeverScrollableScrollPhysics(), // Disable scrolling on the background
+          physics:
+              const NeverScrollableScrollPhysics(), // Disable scrolling on the background
           slivers: [
             SliverAppBar(
               title: const Text(
@@ -86,6 +95,16 @@ class _MapsScreenState extends State<MapsScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    // --- Start of Changes ---
+
+    // 1. Check for dark mode
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    // 2. Set the tile URL based on the theme
+    final tileUrl = isDarkMode
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+
     return FlutterMap(
       options: MapOptions(
         initialCenter: _currentPosition!,
@@ -93,8 +112,11 @@ class _MapsScreenState extends State<MapsScreen> {
       ),
       children: [
         TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'com.example.aura', // Replace with your app's package name
+          urlTemplate: tileUrl,
+          // 3. Add subdomains for CartoDB
+          subdomains: const ['a', 'b', 'c', 'd'],
+          userAgentPackageName:
+              'com.example.aura', // Replace with your app's package name
         ),
         MarkerLayer(
           markers: [
@@ -110,6 +132,21 @@ class _MapsScreenState extends State<MapsScreen> {
             ),
           ],
         ),
+        // 4. Add attribution for the map providers
+        RichAttributionWidget(
+          attributions: [
+            TextSourceAttribution(
+              '© OpenStreetMap contributors',
+              onTap: () =>
+                  _launchUrl('https://openstreetmap.org/copyright'),
+            ),
+            TextSourceAttribution(
+              '© CARTO',
+              onTap: () => _launchUrl('https://carto.com/attributions'),
+            ),
+          ],
+        ),
+        // --- End of Changes ---
       ],
     );
   }
