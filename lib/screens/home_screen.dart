@@ -16,13 +16,15 @@ class HomeScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar.large(
-              leading: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.auto_awesome),
-              ),
-              title: const Text(
-                'Welcome to Aura',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              title: Row(
+                children: [
+                  const Icon(Icons.auto_awesome),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'Welcome to Aura',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               backgroundColor: Theme.of(context).colorScheme.surface,
               floating: true,
@@ -63,22 +65,14 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Discover Something New',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            const SizedBox(height: 16),
                             TextField(
+                              style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 hintText: 'Enter a URL',
+                                hintStyle:
+                                    TextStyle(color: Colors.white.withOpacity(0.7)),
                                 filled: true,
-                                fillColor: Colors.white.withOpacity(0.2),
+                                fillColor: Colors.white.withOpacity(0.1),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide.none,
@@ -90,24 +84,27 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 12),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
                                 ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: const Text(
-                                'Analyze',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                child: const Text(
+                                  'Analyze',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                             ),
@@ -127,67 +124,82 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     // Quick Action Cards
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 1.2,
+                    Column(
                       children: [
-                        _buildQuickActionCard(
-                          context,
-                          Icons.map_outlined,
-                          'Maps',
-                          Colors.green,
-                          () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MapsScreen()),
-                            );
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildQuickActionCard(
+                                context,
+                                Icons.map_outlined,
+                                'Maps',
+                                Colors.green,
+                                () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MapsScreen()),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: _buildQuickActionCard(
+                                context,
+                                Icons.restaurant_menu,
+                                'Recipes',
+                                Colors.orange,
+                                () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RecipesScreen()),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                        _buildQuickActionCard(
-                          context,
-                          Icons.restaurant_menu,
-                          'Recipes',
-                          Colors.orange,
-                          () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RecipesScreen()),
-                            );
-                          },
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildQuickActionCard(
+                                context,
+                                Icons.shopping_bag_outlined,
+                                'Products',
+                                Colors.blue,
+                                () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProductsScreen()),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: _buildQuickActionCard(
+                                context,
+                                Icons.movie_outlined,
+                                'Movies',
+                                Colors.red,
+                                () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MoviesScreen()),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                        _buildQuickActionCard(
-                          context,
-                          Icons.shopping_bag_outlined,
-                          'Products',
-                          Colors.blue,
-                          () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ProductsScreen()),
-                            );
-                          },
-                        ),
-                        _buildQuickActionCard(
-                          context,
-                          Icons.movie_outlined,
-                          'Movies',
-                          Colors.red,
-                          () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MoviesScreen()),
-                            );
-                          },
-                        ),
+                        const SizedBox(height: 16),
                         _buildQuickActionCard(
                           context,
                           Icons.more_horiz,
@@ -202,7 +214,7 @@ class HomeScreen extends StatelessWidget {
                           },
                         ),
                       ],
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -220,38 +232,41 @@ class HomeScreen extends StatelessWidget {
     Color color,
     VoidCallback onTap,
   ) {
-    return Card(
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+    return AspectRatio(
+      aspectRatio: 1.2,
+      child: Card(
+        elevation: 0,
+        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 32,
+                    color: color,
+                  ),
                 ),
-                child: Icon(
-                  icon,
-                  size: 32,
-                  color: color,
+                const SizedBox(height: 12),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
